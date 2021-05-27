@@ -6,7 +6,7 @@ import QuizCard from "src/components/quizCard";
 import Head from "next/head";
 
 export const getStaticPaths = async () => {
-  const res = await fetch("https://breathecode.herokuapp.com/v1/assessment/");
+  const res = await fetch("https://raw.githubusercontent.com/ArielCalisaya/assessment/master/src/util/example.json");
   const data = await res.json();
   const paths = data.map((res) => {
     return {
@@ -22,7 +22,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const slug = context.params.slug;
   const res = await fetch(
-    `https://breathecode.herokuapp.com/v1/assessment/${slug}`
+    `https://raw.githubusercontent.com/ArielCalisaya/assessment/master/src/util/example.json${slug}`
   );
   const data = await res.json();
   return {
