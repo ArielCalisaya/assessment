@@ -29,6 +29,10 @@ export default function Home({ quizList }) {
         type: types.setFinalScore,
         payload: false
       });
+      dispatch({
+        type: types.setMultiAnswerSelection,
+        payload: []
+      })
     }
   }, []);
 
@@ -61,16 +65,16 @@ export default function Home({ quizList }) {
           {quizList.length === 0 ? (
             <p>Loading...</p>
           ) : (
-            quizList.map((quiz, i) => {
-              return (
-                <Link key={i} href={`/quiz/${quiz.slug}`}>
+            // quizList.map((quiz, i) => {
+            //   return (
+                <Link href={`/quiz/${quizList.slug}`}>
                   <a className={styles.card}>
-                    <h2>{quiz.slug} &rarr;</h2>
-                    <p>{quiz.title}</p>
+                    <h2>{quizList.slug} &rarr;</h2>
+                    <p>{quizList.title}</p>
                   </a>
                 </Link>
-              );
-            })
+            //   );
+            // })
           )}
         </div>
       </main>

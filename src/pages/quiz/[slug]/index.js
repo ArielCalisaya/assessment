@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { StoreContext } from "@store/StoreProvider";
 import { types } from "@store/reducer";
 import styles from "@styles/Home.module.css";
@@ -8,22 +8,25 @@ import Head from "next/head";
 export const getStaticPaths = async () => {
   const res = await fetch("https://raw.githubusercontent.com/ArielCalisaya/assessment/master/src/util/example.json");
   const data = await res.json();
-  const paths = data.map((res) => {
-    return {
-      params: { slug: res.slug.toString() },
-    };
-  });
+  // const paths = data.map((res) => {
+  //   return {
+  //     params: { slug: data.toString() }
+  //   };
+  // });
+
+  // const paths = {params: { slug: data.toString() }}
   return {
-    paths,
+    paths: [
+      { params:  {slug: data.slug.toString()}}
+    ]
+    ,
     fallback: false,
   };
 };
 
 export const getStaticProps = async (context) => {
   const slug = context.params.slug;
-  const res = await fetch(
-    `https://raw.githubusercontent.com/ArielCalisaya/assessment/master/src/util/example.json${slug}`
-  );
+  const res = await fetch(`https://raw.githubusercontent.com/ArielCalisaya/assessment/master/src/util/example.json`);
   const data = await res.json();
   return {
     props: { quiz: data },
@@ -33,6 +36,8 @@ export const getStaticProps = async (context) => {
 const QuizSlug = ({ quiz }) => {
   const [store, dispatch] = useContext(StoreContext);
   const intervalRef = useRef(null);
+  const [currentAnswer, setAnswer] = useState('')
+
 
   useEffect(() => {
     dispatch({
@@ -63,8 +68,6 @@ const QuizSlug = ({ quiz }) => {
     }
   };
 
-  // TODO: QUIZ Empezar a crear funcionalidades para el QUIZ,
-  // TODO: Se necesita que al hacer click en una opcion si score === 1 = true : false y que cambie a la siguiente tarjeta
   return (
     <div className={styles.container}>
       <Head>
@@ -97,7 +100,7 @@ const QuizSlug = ({ quiz }) => {
             </div>
           </>
         ) : (
-          <QuizCard />
+          <QuizCard currentAnswer={currentAnswer}/>
         )}
       </div>
     </div>
