@@ -139,7 +139,7 @@ const QuizCard = () => {
   return (
     <div className={styles.container}>
 
-    {store.getAnswer === true ? <Answer /> : null}
+    {store.getAnswer === true && store.isInstantFeedback ? <Answer /> : null}
 
     {store.showFinalScore === false && questions.length > 0 ? (
       <>
@@ -240,13 +240,13 @@ const QuizCard = () => {
           <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
             Finished in: {store.timer} Seconds
           </span>
-          {currentTresh && (
+          {(currentTresh || store.tresholds.length > 0) && (
             <>
               <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
-                {currentTresh.success_message !== '' ? currentTresh.success_message : currentTresh.fail_message}<br/>
+                {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
               </span>
               
-              <Link href={currentTresh.success_next !== '' ? currentTresh.success_next : currentTresh.fail_next}>
+              <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
                 <button className={styles.start} >
                   Continue to Next Step
                 </button>

@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { types } from "@store/reducer";
 
 export const getStaticProps = async () => {
-  const res = await fetch(`${process.env.API_HOST}/assessment`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/assessment`);
   const data = await res.json();
   return {
     props: { quizList: data },

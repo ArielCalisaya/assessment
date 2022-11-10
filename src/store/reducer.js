@@ -2,6 +2,7 @@ export const types = {
   setScore: "score - puntos",
   setQuesions: "quiz - prueba",
   setTresholds: "tresholds",
+  setIsInstantFeedback: "set isInstantFeedback",
   setTemplate: "template",
   setStarted: "start - empezar",
   startTimer: "start_timer - iniciar_temporizador",
@@ -31,6 +32,7 @@ export const initialStore = {
   selectedAnswer: "",
   multiAnswerSelection: [],
   tresholds: [],
+  isInstantFeedback: true,
   templates: {
       correct: ['That\'s right!','Yes! Maybe you paid attention?','You seem to know most of the anwers','Keep it up!'],
       incorrect: ['Uhh no.', 'Nop, you are wrong dude.', 'Mmmmm... almost there, but no.', 'No! Have you been paying attention?']
@@ -85,6 +87,11 @@ const storeReducer = (state, action) => {
         return {
           ...state,
           tresholds: action.payload
+        }
+    case types.setIsInstantFeedback:
+        return {
+          ...state,
+          isInstantFeedback: action.payload
         }
     case types.setGetCorrect:
       return {
