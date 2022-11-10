@@ -1,12 +1,13 @@
 import { useContext, useEffect, useRef } from "react";
 import { StoreContext } from "@store/StoreProvider";
 import { types } from "@store/reducer";
+import { useRouter } from 'next/router'
 import styles from "@styles/Home.module.css";
 import QuizCard from "src/components/quizCard";
 import Head from "next/head";
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`${process.env.API_HOST}/assessment`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/assessment`);
   const data = await res.json();
   const paths = data.map((res) => {
     return {
@@ -19,46 +20,69 @@ export const getStaticPaths = async () => {
   };
 };
 
+const isBrowser = typeof window !== "undefined";
+
 export const getStaticProps = async (context) => {
+
   const slug = context.params.slug;
   const res = await fetch(
-    `${process.env.API_HOST}/assessment/${slug}`
-  );
-  const resTresh = await fetch(
-    `${process.env.API_HOST}/assessment/${slug}/threshold`
+    `${process.env.NEXT_PUBLIC_API_HOST}/assessment/${slug}`
   );
   
   const data = await res.json();
-  const dataTresh = await resTresh.json();
-
-  const compare = (a, b) => {
-    if ( a.score_threshold < b.score_threshold ){
-      return -1;
-    }
-    if ( a.score_threshold > b.score_threshold ){
-      return 1;
-    }
-    return 0;
-  }
 
   return {
-    props: { quiz: data, thresholds: dataTresh.sort((compare)) },
+    props: { quiz: data },
   };
 };
 
-const QuizSlug = ({ quiz, thresholds }) => {
+const QuizSlug = ({ quiz }) => {
   const [store, dispatch] = useContext(StoreContext);
   const intervalRef = useRef(null);
+  const router = useRouter()
+  const { academy, slug } = router.query
 
-  useEffect(() => {
+  useEffect(async () => {
+    if (isBrowser) {
+      if (academy) localStorage.setItem('academy', academy);
+      else localStorage.removeItem('academy');
+    }
+    
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/assessment/${slug}/threshold${academy ? `?academy=${academy}` : ''}`
+    );
+    
+    const data = await res.json();
+  
+    const compare = (a, b) => {
+      if ( a.score_threshold < b.score_threshold ){
+        return -1;
+      }
+      if ( a.score_threshold > b.score_threshold ){
+        return 1;
+      }
+      return 0;
+    }
+  
+    const thres = data.sort((compare));
+
+    dispatch({
+      type: types.setTresholds,
+      payload: thres,
+    });
+
+  }, [academy]);
+  
+  useEffect(async () => {
+    
     dispatch({
       type: types.setQuesions,
       payload: quiz.questions,
     });
 
     dispatch({
-      type: types.setTresholds,
-      payload: thresholds,
+      type: types.setIsInstantFeedback,
+      payload: quiz.is_instant_feedback,
     });
 
   }, []);
