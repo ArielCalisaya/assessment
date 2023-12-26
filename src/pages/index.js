@@ -67,11 +67,11 @@ export default function Home({ quizList }) {
           ) : (
             quizList.map((quiz, i) => {
               return (
-                <Link key={i} href={`/quiz/${quiz.slug}`}>
-                  <a className={styles.card}>
+                <Link key={i} href={`/quiz/${quiz.slug}`} passHref>
+                  <div className={styles.card}>
                     <h2>{quiz.slug} &rarr;</h2>
                     <p>{quiz.title}</p>
-                  </a>
+                  </div>
                 </Link>
               );
             })
