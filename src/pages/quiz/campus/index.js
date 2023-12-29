@@ -129,15 +129,6 @@ const CampusSelectionPage = () => {
           </a>
         </div>
       )}
-
-      <h1>Campus Beginners</h1>
-      <CampusSelectionBeginner />
-
-      <h1>Campus Intermediate</h1>
-      <CampusSelectionIntermediate />
-
-      <h1>Campus Advanced</h1>
-      <CampusSelectionAdvanced />
     </div>
   );
 };
