@@ -246,18 +246,19 @@ const QuizCard = () => {
                 {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
               </span>
               
+              {/*
               <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
                 <button className={styles.start} >
                   Continue to Next Step
                 </button>
-              </Link>
-
-              <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
-                <button className={styles.start} >
-                  Continue to Next Step
-                </button>
-              </Link>
+              </Link> 
+              */}
               
+              <a href="/quiz/campus" target="_blank" rel="noopener noreferrer">
+                <button className={styles.start}>
+                  Continue to Next Step
+                </button>
+              </a>
             </>
           )}
         </div>
