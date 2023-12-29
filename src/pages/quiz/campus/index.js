@@ -1,8 +1,5 @@
 'use client'
 
-import CampusSelectionBeginner from "src/components/campusSelectionBeginner";
-import CampusSelectionIntermediate from "src/components/CampusSelectionIntermediate";
-import CampusSelectionAdvanced from "src/components/campusSelectionAdvanced";
 import { useState } from 'react';
 import styles from "@styles/Home.module.css";
 
@@ -120,15 +117,17 @@ const CampusSelectionPage = () => {
         </select>
       </div>
 
-      {combinedResult && (
-        <div className={`campus-grid ${styles.campusGrid}`}>
-          <h2>Your selection:</h2>
-          <h3>{combinedResult}</h3>
-          <a href={generateCourseLink()} target="_blank" rel="noopener noreferrer">
-            <button className={`campusSelectButton ${styles.buttonTextSelector}`}>Enroll Here</button>
-          </a>
-        </div>
-      )}
+      <div>
+        {combinedResult && (
+          <div>
+            <h2>Your selection:</h2>
+            <h3>{combinedResult}</h3>
+            <a href={generateCourseLink()} target="_blank" rel="noopener noreferrer">
+              <button className={`campusSelectButton ${styles.buttonTextSelector}`}>Enroll Here</button>
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
