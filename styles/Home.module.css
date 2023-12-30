@@ -110,6 +110,17 @@
   justify-items: center;
 }
 
+.campusGrid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
 .grid_start {
   display: grid;
   width: 100%;
@@ -144,7 +155,7 @@
   width: 100%;
   /* width: 45%; */
 }
-.quiz_card {
+.quiz_card, .campusCard {
   /* margin: 1rem; */
   padding: 1.5rem;
   text-align: left;
@@ -179,9 +190,9 @@
   /* width: 45%; */
 }
 
-.quiz_card:hover, .start:hover, .card:hover,
+.quiz_card:hover, .start:hover, .card:hover, .campusCard:hover,
 /* .quiz_card:focus, .start:focus, .card:focus, */
-.quiz_card:active, .start:active, .card:active {
+.quiz_card:active, .start:active, .card:active, .campusCard:active {
   color: #0070f3;
   border-color: #0070f3;
 }

@@ -176,7 +176,7 @@ const QuizCard = () => {
                       </h2>
                     </label>
                   </>
-                ) : <p>an error occurred, please report to your teacher</p>}
+                ) : <p>An error occurred. Please, report to your teacher</p>}
               </Fragment>
             )
           })}
@@ -221,10 +221,10 @@ const QuizCard = () => {
       {questions.length === 0 && (
         <>
           <span style={{fontSize: "var(--xxl)", margin: "10rem 10% 20px 10%", textAlign: "center"}}>
-            This quizz not have any questions to answer :c
+            This quizz does not have any questions to answer :c
           </span>
           <span style={{fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center"}}>
-            redirecting to home...
+            Redirecting to home...
           </span>
         </>
       )}
@@ -246,11 +246,19 @@ const QuizCard = () => {
                 {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
               </span>
               
+              {/*
               <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
                 <button className={styles.start} >
                   Continue to Next Step
                 </button>
-              </Link>
+              </Link> 
+              */}
+              
+              <a href="/quiz/campus" target="_blank" rel="noopener noreferrer">
+                <button className={styles.start}>
+                  Continue to Next Step
+                </button>
+              </a>
             </>
           )}
         </div>

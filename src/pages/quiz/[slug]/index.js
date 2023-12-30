@@ -87,7 +87,7 @@ const QuizSlug = () => {
   if (!quiz) return (
     <div className={styles.container}>
       <div className={styles.quiz_main}>
-        <h3 className={styles.quiz_title}>...Loading</h3>
+        <h3 className={styles.quiz_title}>Loading...</h3>
       </div>
     </div>
   )
