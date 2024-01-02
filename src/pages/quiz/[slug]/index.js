@@ -15,8 +15,9 @@ const QuizSlug = () => {
   const router = useRouter();
   const { academy, slug } = router.query;
 
-  useEffect(async () => {
-    if (slug) {
+  useEffect(() => {
+
+    const getInfo = async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_HOST}/assessment/${slug}`
       );
@@ -64,6 +65,7 @@ const QuizSlug = () => {
         payload: data.is_instant_feedback,
       });
     }
+    if (slug) getInfo();
   }, [slug, academy]);
 
   const handleStartQuiz = () => {
