@@ -3,38 +3,22 @@
 import { useState } from 'react';
 import styles from "@styles/Home.module.css";
 
-
 const CampusSelectionPage = () => {
   const [campus, setCampus] = useState('');
   const [schedule, setSchedule] = useState('');
   const [score, setScore] = useState('');
   const [combinedResult, setCombinedResult] = useState('');
 
-  const campusOptionsBeginners = [
-    { name: "Kendall", courseId: [1154898] },
-    { name: "North", courseId: [1166381] },
-    { name: "Padron", courseId: [1171964] },
-    { name: "West", courseId: [1171211] },
-    { name: "Wolfson", courseId: [1020914] },
-  ];
-
-  const campusOptionsIntermediate = [
-    { name: "Kendall", courseId: [1020369] },
-    { name: "North", courseId: [1166435] },
-    { name: "Padron", courseId: [1171977] },
-    { name: "West", courseId: [1171258] },
-    { name: "Wolfson", courseId: [1161205] },
-  ];
-
-  const campusOptionsAdvanced = [
-    { name: "Kendall", courseId: [1154969] },
-    { name: "North", courseId: [1166445] },
-    { name: "Padron", courseId: [1171998] },
-    { name: "West", courseId: [1171294] },
-    { name: "Wolfson", courseId: [1161210] },
-  ];
-
-  const courseUrl = "https://ce.mdc.edu/search/publicCourseSearchDetails.do?method=load&courseId=";
+  const campusOptionsLevels = {
+    'ESL Fundamentals': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=ESL+Fundamentals&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 1': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+1&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 2': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+2&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 3': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+3&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 4': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+4&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 5': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+5&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Intensive English - Level 6': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Intensive+English+-+Level+6&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+    'Fundamental': 'https://ce.mdc.edu/search/publicCourseAdvancedSearch.do?method=doPaginatedSearch&showInternal=false&courseSearch.courseDescriptionKeyword=Fundamental&courseSearch.partialCourseNumber=&courseSearch.courseCategoryStringArray=0&courseSearch.sectionSemesterIdString=&courseSearch.deliveryMethodString=&courseSearch.sectionInstructorName=&courseSearch.sectionAccreditingAssociationStringArray=0&courseSearch.sectionDayOfWeekStringArray=0&courseSearch.sectionStartTimeStringArray=0&courseSearch.sectionStartMonthStringArray=0&courseSearch.filterString=all',
+  };
 
   const handleCampusChange = (e) => {
     setCampus(e.target.value);
@@ -62,25 +46,11 @@ const CampusSelectionPage = () => {
   const generateCourseLink = () => {
     if (!combinedResult || !campus) return '';
 
-    const campusOptions = getCampusOptionsForScore(score);
-    const campusInfo = campusOptions.find((option) => option.name === campus);
-    if (!campusInfo) return '';
-
-    const courseId = campusInfo.courseId[0];
-    return `${courseUrl}${courseId}`;
-  };
-
-  const getCampusOptionsForScore = (selectedScore) => {
-    switch (selectedScore) {
-      case 'Beginner':
-        return campusOptionsBeginners;
-      case 'Intermediate':
-        return campusOptionsIntermediate;
-      case 'Advanced':
-        return campusOptionsAdvanced;
-      default:
-        return [];
+    if (campusOptionsLevels[score]) {
+      return campusOptionsLevels[score];
     }
+
+    return '';
   };
 
   return (
@@ -111,9 +81,14 @@ const CampusSelectionPage = () => {
         <label>Score:</label>
         <select value={score} onChange={handleScoreChange}>
           <option value="">Select Score</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
+          <option value="ESL Fundamentals">ESL Fundamentals</option>
+          <option value="Intensive English - Level 1">Intensive English - Level 1</option>
+          <option value="Intensive English - Level 2">Intensive English - Level 2</option>
+          <option value="Intensive English - Level 3">Intensive English - Level 3</option>
+          <option value="Intensive English - Level 4">Intensive English - Level 4</option>
+          <option value="Intensive English - Level 5">Intensive English - Level 5</option>
+          <option value="Intensive English - Level 6">Intensive English - Level 6</option>
+          <option value="Fundamental">Fundamental</option>
         </select>
       </div>
 
@@ -122,9 +97,11 @@ const CampusSelectionPage = () => {
           <div>
             <h2>Your selection:</h2>
             <h3>{combinedResult}</h3>
-            <a href={generateCourseLink()} target="_blank" rel="noopener noreferrer">
-              <button className={`campusSelectButton ${styles.buttonTextSelector}`}>Enroll Here</button>
-            </a>
+            {generateCourseLink() && (
+              <a href={generateCourseLink()} target="_blank" rel="noopener noreferrer">
+                <button className={`campusSelectButton ${styles.buttonTextSelector}`}>Enroll Here</button>
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -132,4 +109,4 @@ const CampusSelectionPage = () => {
   );
 };
 
-export default CampusSelectionPage;      
+export default CampusSelectionPage;
