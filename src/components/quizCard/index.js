@@ -4,71 +4,115 @@ import styles from "@styles/Home.module.css";
 import checkBoxStyle from "@styles/multiselect.module.css";
 import { useContext } from "react";
 import { types } from "@store/reducer";
-import Answer from "../Answer"
+import Answer from "../Answer";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 const QuizCard = () => {
   const [currentTresh, setCurrentTresh] = useState(null);
   const [store, dispatch] = useContext(StoreContext);
-  const questions = store.questions
-  const currentQuestion = store.currentQuestion
-  const router = useRouter()
+  const questions = store.questions;
+  const currentQuestion = store.currentQuestion;
+  const router = useRouter();
+
+  useEffect(() => {
+    const endpoint = router.asPath;
+
+    // Adjust the conditions based on your requirements
+    if (endpoint === "/quiz/english-beginners" && store.score <= 5) {
+      // Send to Link 0
+      setCurrentTresh({ success_next: "/link-0" });
+    } else if (
+      endpoint === "/quiz/english-beginners" &&
+      store.score >= 6 &&
+      store.score <= 11
+    ) {
+      // Send to Link 1
+      setCurrentTresh({ success_next: "/link-1" });
+    } else if (
+      endpoint === "/quiz/english-beginners" &&
+      store.score >= 12 &&
+      store.score <= 15
+    ) {
+      // Send to /quiz/english-1
+      setCurrentTresh({ success_next: "/quiz/english-1" });
+    } else if (
+      endpoint === "/quiz/english-1" &&
+      store.score >= 1 &&
+      store.score <= 11
+    ) {
+      // Send to Link 2
+      setCurrentTresh({ success_next: "/link-2" });
+    } else if (
+      endpoint === "/quiz/english-1" &&
+      store.score >= 12 &&
+      store.score <= 15
+    ) {
+      // Send to /quiz/english-2
+      setCurrentTresh({ success_next: "/quiz/english-2" });
+    } else if (
+      endpoint === "/quiz/english-2" &&
+      store.score >= 1 &&
+      store.score <= 7
+    ) {
+      // Send to Link 3
+      setCurrentTresh({ success_next: "/link-3" });
+    }
+    // ... (continue the rest of the conditions)
+  }, [store.showFinalScore, store.tresholds, store.score, router.asPath]);
 
   const getRandom = (type) => {
     const index = Math.floor(Math.random() * store.templates[type].length);
     return store.templates[type][index];
-  }
+  };
 
-  // console.log("CURRENT_QUESTIONS", questions)
   const verifyAnswer = (score) => {
     if (score === 1) {
-
       dispatch({
         type: types.setGetCorrect,
-        payload: true
-      })
+        payload: true,
+      });
       dispatch({
-        type: types.setScore
-      })
+        type: types.setScore,
+      });
       setTimeout(() => {
         dispatch({
           type: types.setGetCorrect,
-          payload: false
-        })
-      }, 1300)
-      return getRandom("correct")
+          payload: false,
+        });
+      }, 1300);
+      return getRandom("correct");
     } else {
-      return getRandom("incorrect")
+      return getRandom("incorrect");
     }
-  }
+  };
 
   const getResponse = (score) => {
     dispatch({
       type: types.setGetAnswer,
-      payload: true
-    })
+      payload: true,
+    });
     dispatch({
       type: types.setSelectedAnswer,
-      payload: verifyAnswer(score)
-    })
+      payload: verifyAnswer(score),
+    });
     setTimeout(() => {
       dispatch({
         type: types.setGetAnswer,
-        payload: false
-      })
+        payload: false,
+      });
       dispatch({
         type: types.setMultiAnswerSelection,
-        payload: []
-      })
-      boxesArr.find(i => i.checked === true ? i.checked = false : null)
-    }, 1300)
-  }
+        payload: [],
+      });
+      boxesArr.find((i) => (i.checked === true ? (i.checked = false) : null));
+    }, 1300);
+  };
 
   let boxes = document.getElementsByName("isMultiselect");
-  let multiselection = []
+  let multiselection = [];
   var boxesArr = Array.prototype.slice.call(boxes, 0);
-  let checkedBoxes
+  let checkedBoxes;
 
   const verifyCurrentCheckbox = () => {
     checkedBoxes = boxesArr.filter((checkbox) => {
@@ -77,41 +121,41 @@ const QuizCard = () => {
 
     multiselection = checkedBoxes.map((checkbox) => {
       return parseInt(checkbox.value);
-    })
+    });
     dispatch({
       type: types.setMultiAnswerSelection,
-      payload: multiselection
-    })
-  }
+      payload: multiselection,
+    });
+  };
 
   const selectAnswer = (score) => {
-    getResponse(score)
+    getResponse(score);
     if (currentQuestion < questions.length - 1) {
       dispatch({
-        type: types.setCurrentQuestion
-      })
+        type: types.setCurrentQuestion,
+      });
     } else {
-      clearInterval(store.timerRef)
+      clearInterval(store.timerRef);
       dispatch({
         type: types.setFinalScore,
-        payload: true
-      })
+        payload: true,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (questions.length <= 0) {
-      clearInterval(store.timerRef)
+      clearInterval(store.timerRef);
       dispatch({
         type: types.setFinalScore,
-        payload: true
-      })
+        payload: true,
+      });
 
       setTimeout(() => {
-        router.push('/')
-      }, 5500)
+        router.push("/");
+      }, 5500);
     }
-  }, [questions])
+  }, [questions]);
 
   useEffect(() => {
     if (store.showFinalScore && store.tresholds.length > 0) {
@@ -122,23 +166,22 @@ const QuizCard = () => {
 
       setCurrentTresh(achieved);
     }
-  }, [store.showFinalScore])
+  }, [store.showFinalScore]);
 
   const submitMultiselect = () => {
-    let verifyError = store.multiAnswerSelection.find(score => score === 0)
+    let verifyError = store.multiAnswerSelection.find((score) => score === 0);
 
     if (verifyError === 0) {
       // console.log("INCORRECT", verifyError)
-      return selectAnswer(verifyError)
+      return selectAnswer(verifyError);
     } else {
       // console.log("CORRECT", 1)
-      return selectAnswer(1)
+      return selectAnswer(1);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
-
       {store.getAnswer === true && store.isInstantFeedback ? <Answer /> : null}
 
       {store.showFinalScore === false && questions.length > 0 ? (
@@ -148,38 +191,49 @@ const QuizCard = () => {
           </h1>
 
           <div className={styles.quiz_grid}>
-            {Array.isArray(questions[currentQuestion].options) && questions[currentQuestion].options.map((option, i) => {
-              return (
-                <Fragment key={i}  >
-                  {questions[currentQuestion].question_type === "SELECT" ? (
-                    <button
-                      key={option.id}
-                      name='isSelect'
-                      onClick={() => selectAnswer(option.score)}
-                      className={styles.quiz_card}>
-                      <h2 className={styles.buttonTextSelector}>
-                        {option.title}
-                      </h2>
-                    </button>
-                  ) : questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
-                    <>
-                      <label className={checkBoxStyle.multiSelect_label} key={option.id}>
-                        <input
-                          value={option.score}
-                          name='isMultiselect'
-                          type='checkbox'
-                          onChange={() => verifyCurrentCheckbox()}
-                          className={checkBoxStyle.buton_input}
-                        />
-                        <h2 className={checkBoxStyle.button_span} style={{ fontWeight: "normal" }}>
+            {Array.isArray(questions[currentQuestion].options) &&
+              questions[currentQuestion].options.map((option, i) => {
+                return (
+                  <Fragment key={i}>
+                    {questions[currentQuestion].question_type === "SELECT" ? (
+                      <button
+                        key={option.id}
+                        name="isSelect"
+                        onClick={() => selectAnswer(option.score)}
+                        className={styles.quiz_card}
+                      >
+                        <h2 className={styles.buttonTextSelector}>
                           {option.title}
                         </h2>
-                      </label>
-                    </>
-                  ) : <p>An error occurred. Please, report to your teacher</p>}
-                </Fragment>
-              )
-            })}
+                      </button>
+                    ) : questions[currentQuestion].question_type ===
+                      "SELECT_MULTIPLE" ? (
+                      <>
+                        <label
+                          className={checkBoxStyle.multiSelect_label}
+                          key={option.id}
+                        >
+                          <input
+                            value={option.score}
+                            name="isMultiselect"
+                            type="checkbox"
+                            onChange={() => verifyCurrentCheckbox()}
+                            className={checkBoxStyle.buton_input}
+                          />
+                          <h2
+                            className={checkBoxStyle.button_span}
+                            style={{ fontWeight: "normal" }}
+                          >
+                            {option.title}
+                          </h2>
+                        </label>
+                      </>
+                    ) : (
+                      <p>An error occurred. Please, report to your teacher</p>
+                    )}
+                  </Fragment>
+                );
+              })}
           </div>
 
           {questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
@@ -200,42 +254,60 @@ const QuizCard = () => {
                   className={checkBoxStyle.multiSelect_SubmitButton}
                   style={{ textAlign: "center" }}
                 >
-                  <h2 style={{ fontWeight: "normal" }}>
-                    Send
-                  </h2>
+                  <h2 style={{ fontWeight: "normal" }}>Send</h2>
                 </button>
               )}
-
             </>
           ) : null}
-
         </>
       ) : (
         <>
-          {/* <Link href={"/"} >
-       <a className={styles.backToHome}>
-        Back to Home
-      </a> 
-      </Link> */}
-
           {questions.length === 0 && (
             <>
-              <span style={{ fontSize: "var(--xxl)", margin: "10rem 10% 20px 10%", textAlign: "center" }}>
-                This quizz does not have any questions to answer :c
+              <span
+                style={{
+                  fontSize: "var(--xxl)",
+                  margin: "10rem 10% 20px 10%",
+                  textAlign: "center",
+                }}
+              >
+                This quiz does not have any questions to answer :c
               </span>
-              <span style={{ fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center" }}>
+              <span
+                style={{
+                  fontSize: "var(--m)",
+                  fontWeight: "200",
+                  margin: "20px 10%",
+                  textAlign: "center",
+                }}
+              >
                 Redirecting to home...
               </span>
             </>
           )}
 
           {store.showFinalScore === true && questions.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "10rem 0" }}>
-              <span style={{ fontSize: "var(--xxl)", textAlign: "center", margin: "20px 0" }}>
-                {Math.floor(((store.score) / questions.length) * 100)}% accuracy
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                margin: "10rem 0",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "var(--xxl)",
+                  textAlign: "center",
+                  margin: "20px 0",
+                }}
+              >
+                {Math.floor((store.score / questions.length) * 100)}%
+                accuracy
               </span>
               <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
-                Your Score: {store.score} / {questions.length}<br />
+                Your Score: {store.score} / {questions.length}
+                <br />
               </span>
               <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
                 Finished in: {store.timer} Seconds
@@ -243,20 +315,14 @@ const QuizCard = () => {
               {(currentTresh || store.tresholds.length > 0) && (
                 <>
                   <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
-                    {currentTresh?.success_message || store.tresholds[0].fail_message}<br />
+                    {currentTresh?.success_message ||
+                      store.tresholds[0].fail_message}
+                    <br />
                   </span>
-
-                  {/*
-              <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
-                <button className={styles.start} >
-                  Continue to Next Step
-                </button>
-              </Link> 
-              */}
 
                   <button
                     onClick={() => {
-                      if (currentTresh?.score_threshold < 6) {
+                      if (currentTresh?.score_threshold > 14) {
                         router.push("/quiz/english-1");
                       } else {
                         router.push("/quiz/campus");
