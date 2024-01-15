@@ -11,9 +11,10 @@ const isBrowser = typeof window !== "undefined";
 const QuizSlug = () => {
   const [store, dispatch] = useContext(StoreContext);
   const [quiz, setQuiz] = useState(null);
+  const [toggleTimer, setToggleTimer] = useState(false);
   const intervalRef = useRef(null);
   const router = useRouter();
-  const { academy, slug } = router.query;
+  const { academy, slug, time } = router.query; // Asegúrate de obtener 'time' del query string
 
   useEffect(() => {
 
@@ -28,11 +29,14 @@ const QuizSlug = () => {
       if (isBrowser) {
         if (academy) localStorage.setItem("academy", academy);
         else localStorage.removeItem("academy");
+
+        if (time && time.toLowerCase() === "true") {
+          setToggleTimer(false);
+        }
       }
 
       const resThresh = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/assessment/${slug}/threshold${
-          academy ? `?academy=${academy}` : ""
+        `${process.env.NEXT_PUBLIC_API_HOST}/assessment/${slug}/threshold${academy ? `?academy=${academy}` : ""
         }`
       );
 
@@ -109,7 +113,7 @@ const QuizSlug = () => {
       ) : null}
 
       <p className={styles.quiz_timer} style={{ zIndex: 99 }}>
-        {store.timer} sec
+        {toggleTimer && `${store.timer} sec`}
       </p>
 
       <div className={styles.quiz_main}>
