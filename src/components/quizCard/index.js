@@ -241,33 +241,26 @@ const QuizCard = () => {
                 Finished in: {store.timer} Seconds
               </span>
               {(currentTresh || store.tresholds.length > 0) && (
-                <>
-                  <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
-                    {currentTresh?.success_message || store.tresholds[0].fail_message}<br />
-                  </span>
-
-                  {/*
+            <>
+              <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
+                {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
+              </span>
+              
+              {/*
               <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
                 <button className={styles.start} >
                   Continue to Next Step
                 </button>
               </Link> 
               */}
-
-                  <button
-                    onClick={() => {
-                      if (currentTresh?.score_threshold > 14) {
-                        router.push("/quiz/english-1");
-                      } else {
-                        router.push("/quiz/campus");
-                      }
-                    }}
-                    className={styles.start}
-                  >
-                    Continue to Next Step
-                  </button>
-                </>
-              )}
+              
+              <a href="/quiz/campus" target="_blank" rel="noopener noreferrer">
+                <button className={styles.start}>
+                  Continue to Next Step
+                </button>
+              </a>
+            </>
+          )}
             </div>
           )}
         </>
