@@ -242,7 +242,7 @@ const QuizCard = () => {
               </span>
               {(currentTresh || store.tresholds.length > 0) && (
             <>
-              <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
+              <span style={{fontSize: "var(--m)", margin: "20px 0", textAlign: "center"}}>
                 {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
               </span>
               
@@ -252,14 +252,6 @@ const QuizCard = () => {
                   Continue to Next Step
                 </button>
               </Link> 
-              
-              {/*
-              <a href="/quiz/campus" target="_blank" rel="noopener noreferrer">
-                <button className={styles.start}>
-                  Continue to Next Step
-                </button>
-              </a>
-              */}
             </>
           )}
             </div>
