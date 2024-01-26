@@ -22,9 +22,9 @@ const QuizCard = () => {
 
   // console.log("CURRENT_QUESTIONS", questions)
   const verifyAnswer = (score) => {
-    if(score === 1){
+    if (score === 1) {
 
-      dispatch({ 
+      dispatch({
         type: types.setGetCorrect,
         payload: true
       })
@@ -32,7 +32,7 @@ const QuizCard = () => {
         type: types.setScore
       })
       setTimeout(() => {
-        dispatch({ 
+        dispatch({
           type: types.setGetCorrect,
           payload: false
         })
@@ -53,7 +53,7 @@ const QuizCard = () => {
       payload: verifyAnswer(score)
     })
     setTimeout(() => {
-      dispatch({ 
+      dispatch({
         type: types.setGetAnswer,
         payload: false
       })
@@ -71,9 +71,9 @@ const QuizCard = () => {
   let checkedBoxes
 
   const verifyCurrentCheckbox = () => {
-      checkedBoxes = boxesArr.filter((checkbox) => {
-        return checkbox.checked;
-      });
+    checkedBoxes = boxesArr.filter((checkbox) => {
+      return checkbox.checked;
+    });
 
     multiselection = checkedBoxes.map((checkbox) => {
       return parseInt(checkbox.value);
@@ -86,8 +86,8 @@ const QuizCard = () => {
 
   const selectAnswer = (score) => {
     getResponse(score)
-    if(currentQuestion < questions.length - 1){
-      dispatch({ 
+    if (currentQuestion < questions.length - 1) {
+      dispatch({
         type: types.setCurrentQuestion
       })
     } else {
@@ -100,13 +100,13 @@ const QuizCard = () => {
   }
 
   useEffect(() => {
-    if(questions.length <= 0){
+    if (questions.length <= 0) {
       clearInterval(store.timerRef)
       dispatch({
         type: types.setFinalScore,
         payload: true
       })
-      
+
       setTimeout(() => {
         router.push('/')
       }, 5500)
@@ -114,7 +114,7 @@ const QuizCard = () => {
   }, [questions])
 
   useEffect(() => {
-    if(store.showFinalScore && store.tresholds.length > 0){
+    if (store.showFinalScore && store.tresholds.length > 0) {
       let achieved = null;
       store.tresholds.map((tresh) => {
         if (store.score >= tresh.score_threshold) achieved = tresh;
@@ -127,7 +127,7 @@ const QuizCard = () => {
   const submitMultiselect = () => {
     let verifyError = store.multiAnswerSelection.find(score => score === 0)
 
-    if(verifyError === 0) {
+    if (verifyError === 0) {
       // console.log("INCORRECT", verifyError)
       return selectAnswer(verifyError)
     } else {
@@ -139,48 +139,48 @@ const QuizCard = () => {
   return (
     <div className={styles.container}>
 
-    {store.getAnswer === true && store.isInstantFeedback ? <Answer /> : null}
+      {store.getAnswer === true && store.isInstantFeedback ? <Answer /> : null}
 
-    {store.showFinalScore === false && questions.length > 0 ? (
-      <>
-        <h1 className={styles.quiz_title_card}>
-          {questions[currentQuestion].title}
-        </h1>
+      {store.showFinalScore === false && questions.length > 0 ? (
+        <>
+          <h1 className={styles.quiz_title_card}>
+            {questions[currentQuestion].title}
+          </h1>
 
-        <div className={styles.quiz_grid}>
-          {Array.isArray(questions[currentQuestion].options) && questions[currentQuestion].options.map((option, i) => {
-            return (
-              <Fragment key={i}  >
-                {questions[currentQuestion].question_type === "SELECT" ? (
-                  <button
-                    key={option.id}
-                    name='isSelect'
-                    onClick={() => selectAnswer(option.score)}
-                    className={styles.quiz_card}>
-                    <h2 className={styles.buttonTextSelector}>
-                      {option.title}
-                    </h2>
-                  </button>
-                ) : questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
-                  <>
-                    <label className={checkBoxStyle.multiSelect_label} key={option.id}>
-                      <input
-                        value={option.score}
-                        name='isMultiselect'
-                        type='checkbox'
-                        onChange={() => verifyCurrentCheckbox()}
-                        className={checkBoxStyle.buton_input}
-                      />
-                      <h2 className={checkBoxStyle.button_span} style={{ fontWeight: "normal" }}>
+          <div className={styles.quiz_grid}>
+            {Array.isArray(questions[currentQuestion].options) && questions[currentQuestion].options.map((option, i) => {
+              return (
+                <Fragment key={i}  >
+                  {questions[currentQuestion].question_type === "SELECT" ? (
+                    <button
+                      key={option.id}
+                      name='isSelect'
+                      onClick={() => selectAnswer(option.score)}
+                      className={styles.quiz_card}>
+                      <h2 className={styles.buttonTextSelector}>
                         {option.title}
                       </h2>
-                    </label>
-                  </>
-                ) : <p>An error occurred. Please, report to your teacher</p>}
-              </Fragment>
-            )
-          })}
-        </div>
+                    </button>
+                  ) : questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
+                    <>
+                      <label className={checkBoxStyle.multiSelect_label} key={option.id}>
+                        <input
+                          value={option.score}
+                          name='isMultiselect'
+                          type='checkbox'
+                          onChange={() => verifyCurrentCheckbox()}
+                          className={checkBoxStyle.buton_input}
+                        />
+                        <h2 className={checkBoxStyle.button_span} style={{ fontWeight: "normal" }}>
+                          {option.title}
+                        </h2>
+                      </label>
+                    </>
+                  ) : <p>An error occurred. Please, report to your teacher</p>}
+                </Fragment>
+              )
+            })}
+          </div>
 
           {questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
             <>
@@ -209,62 +209,55 @@ const QuizCard = () => {
             </>
           ) : null}
 
-      </>
-    ) : (
-      <>
-      {/* <Link href={"/"} >
+        </>
+      ) : (
+        <>
+          {/* <Link href={"/"} >
        <a className={styles.backToHome}>
         Back to Home
       </a> 
       </Link> */}
 
-      {questions.length === 0 && (
-        <>
-          <span style={{fontSize: "var(--xxl)", margin: "10rem 10% 20px 10%", textAlign: "center"}}>
-            This quizz does not have any questions to answer :c
-          </span>
-          <span style={{fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center"}}>
-            Redirecting to home...
-          </span>
-        </>
-      )}
-
-      {store.showFinalScore === true && questions.length > 0 && (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: "10rem 0"}}>
-          <span style={{fontSize: "var(--xxl)", textAlign: "center", margin: "20px 0"}}>
-            {Math.floor(((store.score) / questions.length) * 100)}% accuracy
-          </span>
-          <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
-            Your Score: {store.score} / {questions.length}<br/>
-          </span>
-          <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
-            Finished in: {store.timer} Seconds
-          </span>
-          {(currentTresh || store.tresholds.length > 0) && (
+          {questions.length === 0 && (
             <>
-              <span style={{fontSize: "var(--m)", margin: "20px 0"}}>
+              <span style={{ fontSize: "var(--xxl)", margin: "10rem 10% 20px 10%", textAlign: "center" }}>
+                This quizz does not have any questions to answer :c
+              </span>
+              <span style={{ fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center" }}>
+                Redirecting to home...
+              </span>
+            </>
+          )}
+
+          {store.showFinalScore === true && questions.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "10rem 0" }}>
+              <span style={{ fontSize: "var(--xxl)", textAlign: "center", margin: "20px 0" }}>
+                {Math.floor(((store.score) / questions.length) * 100)}% accuracy
+              </span>
+              <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
+                Your Score: {store.score} / {questions.length}<br />
+              </span>
+              <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
+                Finished in: {store.timer} Seconds
+              </span>
+              {(currentTresh || store.tresholds.length > 0) && (
+            <>
+              <span style={{fontSize: "var(--m)", margin: "20px 0", textAlign: "center"}}>
                 {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
               </span>
               
-              {/*
+              
               <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
                 <button className={styles.start} >
                   Continue to Next Step
                 </button>
               </Link> 
-              */}
-              
-              <a href="/quiz/campus" target="_blank" rel="noopener noreferrer">
-                <button className={styles.start}>
-                  Continue to Next Step
-                </button>
-              </a>
             </>
           )}
-        </div>
+            </div>
+          )}
+        </>
       )}
-      </>
-    )}
     </div>
   );
 };
