@@ -175,7 +175,7 @@
   overflow-wrap: break-word;
 }
 
-.start {
+.start, .continueBtn {
   margin: 1rem;
   padding: 1.5rem;
   text-align: left;
@@ -185,9 +185,14 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  width: 190px;
   text-align: center;
+  cursor: pointer;
+  min-width: 190px;
   /* width: 45%; */
+}
+
+.continueBtn {
+  font-size: 20px;
 }
 
 .quiz_card:hover, .start:hover, .card:hover, .campusCard:hover,

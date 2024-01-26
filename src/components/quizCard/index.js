@@ -8,7 +8,7 @@ import Answer from "../Answer"
 import Link from "next/link";
 import { useRouter } from 'next/router'
 
-const QuizCard = () => {
+const QuizCard = (props) => {
   const [currentTresh, setCurrentTresh] = useState(null);
   const [store, dispatch] = useContext(StoreContext);
   const questions = store.questions
@@ -231,24 +231,27 @@ const QuizCard = () => {
 
           {store.showFinalScore === true && questions.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "10rem 0" }}>
-              <span style={{ fontSize: "var(--xxl)", textAlign: "center", margin: "20px 0" }}>
-                {Math.floor(((store.score) / questions.length) * 100)}% accuracy
-              </span>
-              <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
-                Your Score: {store.score} / {questions.length}<br />
-              </span>
-              <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
+              {props.toggleFinalScore && <>
+                <span style={{ fontSize: "var(--xxl)", textAlign: "center", margin: "20px 0" }}>
+                  {Math.floor(((store.score) / questions.length) * 100)}% accuracy
+                </span>
+                <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
+                  Your Score: {store.score} / {questions.length}<br />
+                </span>
+              </>}
+              {props.toggleTimer && <span style={{ fontSize: "var(--m)", margin: "20px 0" }}>
                 Finished in: {store.timer} Seconds
-              </span>
+              </span>}
               {(currentTresh || store.tresholds.length > 0) && (
             <>
-              <span style={{fontSize: "var(--m)", margin: "20px 0", textAlign: "center"}}>
-                {currentTresh?.success_message || store.tresholds[0].fail_message}<br/>
-              </span>
+              <div 
+                style={{fontSize: "var(--m)", margin: "20px 0", textAlign: "center"}}
+                dangerouslySetInnerHTML={{ __html: currentTresh?.success_message || store.tresholds[0].fail_message }}
+              />
               
               
               <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
-                <button className={styles.start} >
+                <button id="continueBtn" className={styles.continueBtn} >
                   Continue to Next Step
                 </button>
               </Link> 

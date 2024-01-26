@@ -11,10 +11,26 @@ const isBrowser = typeof window !== "undefined";
 const QuizSlug = () => {
   const [store, dispatch] = useContext(StoreContext);
   const [quiz, setQuiz] = useState(null);
-  const [toggleTimer, setToggleTimer] = useState(false);
+  const [toggleTimer, setToggleTimer] = useState(true);
+  const [toggleFinalScore, setToggleFinalScore] = useState(true);
   const intervalRef = useRef(null);
   const router = useRouter();
-  const { academy, slug, time } = router.query; // Asegúrate de obtener 'time' del query string
+  const { academy, slug, time, score } = router.query; // Asegúrate de obtener 'time' del query string
+
+  useEffect(() => {
+      const receiveMessage = (event) => {
+          if (event.data && event.data.command === 'updateStyle') {
+              Object.assign(document.body.style, event.data.style);
+          }
+      };
+
+      window.addEventListener('message', receiveMessage, false);
+
+      // Cleanup listener on component unmount
+      return () => {
+          window.removeEventListener('message', receiveMessage, false);
+      };
+  }, []);
 
   useEffect(() => {
 
@@ -30,8 +46,12 @@ const QuizSlug = () => {
         if (academy) localStorage.setItem("academy", academy);
         else localStorage.removeItem("academy");
 
-        if (time && time.toLowerCase() === "true") {
+        if (time && time.toLowerCase() === "false") {
           setToggleTimer(false);
+        }
+
+        if (score && score.toLowerCase() === "false") {
+          setToggleFinalScore(false);
         }
       }
 
@@ -112,9 +132,9 @@ const QuizSlug = () => {
         </p>
       ) : null}
 
-      <p className={styles.quiz_timer} style={{ zIndex: 99 }}>
+      {toggleTimer && <p className={styles.quiz_timer} style={{ zIndex: 99 }}>
         {toggleTimer && `${store.timer} sec`}
-      </p>
+      </p>}
 
       <div className={styles.quiz_main}>
         {!store.started ? (
@@ -122,13 +142,13 @@ const QuizSlug = () => {
             <h1 className={styles.quiz_title}>{quiz?.title}</h1>
 
             <div className={styles.grid_start}>
-              <button className={styles.start} onClick={handleStartQuiz}>
+              <button id="startBtn" className={styles.start} onClick={handleStartQuiz}>
                 <h2 style={{ margin: "5px 0" }}>Start</h2>
               </button>
             </div>
           </>
         ) : (
-          <QuizCard />
+          <QuizCard toggleFinalScore={toggleFinalScore} toggleTimer={toggleTimer} />
         )}
       </div>
     </div>
