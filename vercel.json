@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "X-Frame-Options",
-          "value": "ALLOW-FROM https://ce.mdc.edu https://github.de https://app.github.de https://*.app.github.de"  // Replace with the specific domain(s) you want to allow
+          "value": "ALLOW-FROM https://4geeks.com https://ce.mdc.edu https://github.de https://app.github.de https://*.app.github.de"
         }
       ]
     }
