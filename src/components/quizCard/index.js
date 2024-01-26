@@ -250,11 +250,9 @@ const QuizCard = (props) => {
               />
               
               
-              <Link href={currentTresh?.success_next || store.tresholds[0].fail_next}>
-                <button id="continueBtn" className={styles.continueBtn} >
-                  Continue to Next Step
-                </button>
-              </Link> 
+              <a id="continueBtn" className={styles.continueBtn} href={currentTresh?.success_next || store.tresholds[0].fail_next} target="_parent">
+                Continue to Next Step
+              </a>
             </>
           )}
             </div>
