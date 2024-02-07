@@ -243,18 +243,18 @@ const QuizCard = (props) => {
                 Finished in: {store.timer} Seconds
               </span>}
               {(currentTresh || store.tresholds.length > 0) && (
-            <>
-              <div 
-                style={{fontSize: "var(--m)", margin: "20px 0", textAlign: "center"}}
-                dangerouslySetInnerHTML={{ __html: currentTresh?.success_message || store.tresholds[0].fail_message }}
-              />
-              
-              
-              <a id="continueBtn" className={styles.continueBtn} href={currentTresh?.success_next || store.tresholds[0].fail_next} target="_parent">
-                Continue to Next Step
-              </a>
-            </>
-          )}
+                <>
+                  <div
+                    style={{ fontSize: "var(--m)", margin: "20px 0", textAlign: "center" }}
+                    dangerouslySetInnerHTML={{ __html: currentTresh?.success_message || store.tresholds[0].fail_message }}
+                  />
+
+
+                  <a id="continueBtn" className={styles.continueBtn} href={currentTresh?.success_next || store.tresholds[0].fail_next} target="_parent">
+                    Continue to Next Step
+                  </a>
+                </>
+              )}
             </div>
           )}
         </>
