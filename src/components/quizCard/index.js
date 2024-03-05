@@ -109,7 +109,7 @@ const QuizCard = (props) => {
         payload: true
       })
 
-      if (!isEmbedded) {
+      if (isEmbedded === false) {
         setTimeout(() => {
           router.push('/')
         }, 5500)
