@@ -5,8 +5,7 @@ import { useRouter } from "next/router";
 import styles from "@styles/Home.module.css";
 import QuizCard from "src/components/quizCard";
 import Head from "next/head";
-
-const isBrowser = typeof window !== "undefined";
+import { isWindow } from "src/util";
 
 const QuizSlug = () => {
   const [store, dispatch] = useContext(StoreContext);
@@ -42,7 +41,7 @@ const QuizSlug = () => {
       const data = await res.json();
       setQuiz(data);
 
-      if (isBrowser) {
+      if (isWindow) {
         if (academy) localStorage.setItem("academy", academy);
         else localStorage.removeItem("academy");
 
