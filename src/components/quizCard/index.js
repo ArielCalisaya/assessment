@@ -7,6 +7,7 @@ import { types } from "@store/reducer";
 import Answer from "../Answer"
 import Link from "next/link";
 import { useRouter } from 'next/router'
+import { getQueryString } from "src/util";
 
 const QuizCard = (props) => {
   const [currentTresh, setCurrentTresh] = useState(null);
@@ -14,6 +15,7 @@ const QuizCard = (props) => {
   const questions = store.questions
   const currentQuestion = store.currentQuestion
   const router = useRouter()
+  const isEmbedded = getQueryString("embedded") === 'true';
 
   const getRandom = (type) => {
     const index = Math.floor(Math.random() * store.templates[type].length);
@@ -107,9 +109,11 @@ const QuizCard = (props) => {
         payload: true
       })
 
-      setTimeout(() => {
-        router.push('/')
-      }, 5500)
+      if (!isEmbedded) {
+        setTimeout(() => {
+          router.push('/')
+        }, 5500)
+      }
     }
   }, [questions])
 
@@ -223,9 +227,11 @@ const QuizCard = (props) => {
               <span style={{ fontSize: "var(--xxl)", margin: "10rem 10% 20px 10%", textAlign: "center" }}>
                 This quizz does not have any questions to answer :c
               </span>
-              <span style={{ fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center" }}>
-                Redirecting to home...
-              </span>
+              {isEmbedded === false && (
+                <span style={{ fontSize: "var(--m)", fontWeight: "200", margin: "20px 10%", textAlign: "center" }}>
+                  Redirecting to home...
+                </span>
+              )}
             </>
           )}
 
