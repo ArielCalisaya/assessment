@@ -4,6 +4,7 @@ import Link from "next/link";
 import { StoreContext } from "@store/StoreProvider";
 import { useContext, useEffect } from "react";
 import { types } from "@store/reducer";
+import { isWindow } from "src/util";
 
 export const getStaticProps = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/assessment`);
@@ -16,8 +17,7 @@ export const getStaticProps = async () => {
 export default function Home({ quizList }) {
   const [store, dispatch] = useContext(StoreContext);
 
-  const isBrowser = typeof window !== "undefined";
-  const currentWindow = isBrowser ? window.location.pathname : null;
+  const currentWindow = isWindow ? window.location.pathname : null;
 
   // Stops the timer and restarts it when come back to the start
   useEffect(() => {
