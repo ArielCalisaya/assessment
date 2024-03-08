@@ -5,6 +5,9 @@ const getQueryString = (key, def) => {
 };
 
 function updateQueryStringWithCurrentURLParams(targetUrl) {
+
+  if(!window || !targetUrl) return targetUrl;
+  
   // Determine if the target URL is relative
   let isRelative = !targetUrl.startsWith('http://') && !targetUrl.startsWith('https://');
 
