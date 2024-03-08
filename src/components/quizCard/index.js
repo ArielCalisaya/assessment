@@ -7,7 +7,7 @@ import { types } from "@store/reducer";
 import Answer from "../Answer"
 import Link from "next/link";
 import { useRouter } from 'next/router'
-import { getQueryString } from "src/util";
+import { getQueryString, updateQueryStringWithCurrentURLParams } from "src/util";
 
 const QuizCard = (props) => {
   const [currentTresh, setCurrentTresh] = useState(null);
@@ -257,7 +257,7 @@ const QuizCard = (props) => {
                   />
 
 
-                  <a id="continueBtn" className={styles.continueBtn} href={currentTresh?.success_next || store.tresholds[0].fail_next} target="_parent">
+                  <a id="continueBtn" className={styles.continueBtn} href={updateQueryStringWithCurrentURLParams(currentTresh?.success_next || store.tresholds[0].fail_next)} target="_parent">
                     Continue to Next Step
                   </a>
                 </>
