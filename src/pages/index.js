@@ -3,6 +3,8 @@ import styles from "@styles/Home.module.css";
 import Link from "next/link";
 import { StoreContext } from "@store/StoreProvider";
 import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+import { updateQueryStringWithCurrentURLParams } from "src/util";
 import { types } from "@store/reducer";
 import { isWindow } from "src/util";
 
@@ -16,7 +18,8 @@ export const getStaticProps = async () => {
 
 export default function Home({ quizList }) {
   const [store, dispatch] = useContext(StoreContext);
-
+  const router = useRouter();
+  const { debug } = router.query;
   const currentWindow = isWindow ? window.location.pathname : null;
 
   // Stops the timer and restarts it when come back to the start
@@ -67,7 +70,7 @@ export default function Home({ quizList }) {
           ) : (
             quizList.map((quiz, i) => {
               return (
-                <Link key={i} href={`/quiz/${quiz.slug}`} passHref>
+                <Link key={i} href={`/quiz/${quiz.slug}?`+((debug == "true") ? "debug=true" : "")} passHref>
                   <div className={styles.card}>
                     <h2>{quiz.slug} &rarr;</h2>
                     <p>{quiz.title}</p>

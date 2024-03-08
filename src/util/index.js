@@ -5,22 +5,32 @@ const getQueryString = (key, def) => {
 };
 
 function updateQueryStringWithCurrentURLParams(targetUrl) {
+  // Determine if the target URL is relative
+  let isRelative = !targetUrl.startsWith('http://') && !targetUrl.startsWith('https://');
 
-  if(!targetUrl) return targetUrl;
-  
-  // Create a URL object from the current window URL to access its query parameters
-  const currentUrlParams = new URLSearchParams(window.location.search);
-  
-  // Create a URL object for the target URL to modify its query parameters
-  const targetUrlObj = new URL(targetUrl);
+  if (isRelative) {
+    // Extract the path and initial query string from the target URL
+    let [path, queryString] = targetUrl.split('?');
+    let finalQueryString = new URLSearchParams(queryString || '');
 
-  // Iterate over the current URL's search parameters and update the target URL's parameters
-  currentUrlParams.forEach((value, key) => {
-    targetUrlObj.searchParams.set(key, value);
-  });
+    // Extract current page query params and update/add to the target's query params
+    const currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.forEach((value, key) => {
+      finalQueryString.set(key, value);
+    });
 
-  // Return the updated target URL as a string
-  return targetUrlObj.toString();
+    // Reconstruct the target URL with updated query params
+    let updatedUrl = `${path}?${finalQueryString.toString()}`;
+    return updatedUrl;
+  } else {
+    // For absolute URLs, use the previous logic or handle differently as needed
+    const targetUrlObj = new URL(targetUrl);
+    const currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.forEach((value, key) => {
+      targetUrlObj.searchParams.set(key, value);
+    });
+    return targetUrlObj.toString();
+  }
 }
 
 export {
