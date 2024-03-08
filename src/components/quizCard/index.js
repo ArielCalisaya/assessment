@@ -164,6 +164,7 @@ const QuizCard = (props) => {
                       <h2 className={styles.buttonTextSelector}>
                         {option.title}
                       </h2>
+                      {props.debug && <span className={styles.debugScore}>{option.score}</span>}
                     </button>
                   ) : questions[currentQuestion].question_type === "SELECT_MULTIPLE" ? (
                     <>

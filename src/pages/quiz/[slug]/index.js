@@ -14,7 +14,7 @@ const QuizSlug = () => {
   const [toggleFinalScore, setToggleFinalScore] = useState(true);
   const intervalRef = useRef(null);
   const router = useRouter();
-  const { academy, slug, time, score } = router.query; // Asegúrate de obtener 'time' del query string
+  const { academy, slug, time, score, debug } = router.query; // Asegúrate de obtener 'time' del query string
 
   useEffect(() => {
       const receiveMessage = (event) => {
@@ -147,7 +147,7 @@ const QuizSlug = () => {
             </div>
           </>
         ) : (
-          <QuizCard toggleFinalScore={toggleFinalScore} toggleTimer={toggleTimer} />
+          <QuizCard toggleFinalScore={toggleFinalScore} toggleTimer={toggleTimer} debug={debug == "true"} />
         )}
       </div>
     </div>
