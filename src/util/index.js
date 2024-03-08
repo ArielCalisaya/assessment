@@ -5,9 +5,12 @@ const getQueryString = (key, def) => {
 };
 
 function updateQueryStringWithCurrentURLParams(targetUrl) {
+
+  if(!targetUrl) return targetUrl;
+  
   // Create a URL object from the current window URL to access its query parameters
   const currentUrlParams = new URLSearchParams(window.location.search);
-
+  
   // Create a URL object for the target URL to modify its query parameters
   const targetUrlObj = new URL(targetUrl);
 
